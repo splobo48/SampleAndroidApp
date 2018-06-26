@@ -1,0 +1,43 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.example.shaileshlobo.assignmentapp.ui.addresslocation.AddressLocationFragment">
+
+
+<!--    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>-->
+
+
+    <com.mapbox.mapboxsdk.maps.MapView
+        android:layout_width="match_parent"
+        android:id="@+id/mapView"
+        android:layout_height="match_parent">
+
+
+    </com.mapbox.mapboxsdk.maps.MapView>
+
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardElevation="4dp"
+        android:layout_margin="10dp"
+        app:cardBackgroundColor="@android:color/white"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:gravity="start"
+            android:id="@+id/tv_address_text_address_location_fragment"
+            android:text="@string/placeholder_address"/>
+
+
+    </android.support.v7.widget.CardView>
+</FrameLayout>

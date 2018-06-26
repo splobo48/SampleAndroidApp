@@ -1,0 +1,32 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.shaileshlobo.assignmentapp.ui.customerlisting.CustomerListingFragment">
+
+
+    <GridView
+        android:layout_width="match_parent"
+        android:id="@+id/gridlayout_customer_listing_view"
+        android:layout_height="wrap_content"
+        android:background="@color/gray200"
+        android:numColumns="auto_fit">
+
+    </GridView>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_marginTop="100dp"
+        android:padding="16dp"
+        android:id="@+id/tv_show_detials_customer_listing_view"
+        android:textAllCaps="true"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="@android:color/white"
+        android:text="@string/main_activity_show_details_label"
+        android:background="@drawable/background_show_details_btn"/>
+
+
+</LinearLayout>
