@@ -1,2 +1,2 @@
 # SampleApp
-A project to explore different technologies in Android
+A project to explore kotlin, dagger 2 , retrofit 2 in Android
