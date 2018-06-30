@@ -24,4 +24,5 @@ public interface AppComponent {
     void inject(MainAcitivityViewModel activity);
 
 //    void inject(RetrofitInterceptor interceptor);
+
 }

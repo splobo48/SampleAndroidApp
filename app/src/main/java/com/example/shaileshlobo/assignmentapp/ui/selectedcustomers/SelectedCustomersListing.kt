@@ -57,7 +57,7 @@ class SelectedCustomersListing : Fragment() {
     }
 
     private fun initView() {
-        rv_selected_customers_screen.layoutManager = LinearLayoutManager(activity);
+        rv_selected_customers_screen.layoutManager = LinearLayoutManager(activity)
     }
 
 }

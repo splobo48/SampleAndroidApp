@@ -46,7 +46,7 @@ class CustomerListingFragment : Fragment() {
 
         model = ViewModelProviders.of(mContext as AppCompatActivity)
                 .get(MainAcitivityViewModel::class.java)
-        model.getUsers().observe(this, Observer { userModels ->
+        model.getCustomerListing().observe(this, Observer { userModels ->
             if (userModels?.size == 0){
                 tv_show_detials_customer_listing_view.visibility = View.GONE;
             }
@@ -57,9 +57,7 @@ class CustomerListingFragment : Fragment() {
                     model.updateCustomerSelection(idOfCustomer, isChecked);
                 })
             }
-
         })
-
     }
 
     private fun initViews(){
@@ -68,7 +66,7 @@ class CustomerListingFragment : Fragment() {
         tv_show_detials_customer_listing_view.setOnClickListener{
             val selectedCustomers = model.getSelectedCustomers()
             if (selectedCustomers.size == 0){
-                Toast.makeText(mContext,mContext?.getString(R.string.no_cust_selected),
+                Toast.makeText(mContext, mContext.getString(R.string.no_cust_selected),
                         Toast.LENGTH_SHORT).show()
             }
             else{

@@ -4,59 +4,61 @@ import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
 import android.widget.Toast
-import com.example.shaileshlobo.assignmentapp.CustomApplicaton
-import com.example.shaileshlobo.assignmentapp.R
 import com.example.shaileshlobo.assignmentapp.data.models.UserModel
 import com.example.shaileshlobo.assignmentapp.data.remote.CustomerListService
 import com.example.shaileshlobo.assignmentapp.data.remote.RetrofitClient
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 
 /**
  * Created by spl on 20/6/18.
  */
 class MainAcitivityViewModel(application: Application): AndroidViewModel(application){
 
-    private lateinit var customerList : MutableLiveData<List<UserModel>>
+    private var customerList : MutableLiveData<List<UserModel>>? = null
 
-    fun getUsers(): MutableLiveData<List<UserModel>> {
+
+    /*
+    *   Get list of customers to show
+    *
+    * */
+    fun getCustomerListing(): MutableLiveData<List<UserModel>> {
         if (customerList == null) {
-            customerList = MutableLiveData<List<UserModel>>()
-            loadCustomerList()
+            customerList = MutableLiveData()
+            fetchCustomerListingApi()
         }
-        return customerList
+        return customerList as MutableLiveData<List<UserModel>>
     }
 
-    private fun loadCustomerList() {
-        val application = getApplication<CustomApplicaton>()
-        // Do an asynchronous operation to fetch users.
-        val service = RetrofitClient.getRetrofitInstance()
-                .create(CustomerListService::class.java)
 
-        val call = service.listCustomers()
+    /*
+    *
+    * fetch rest api from server
+    *
+    * */
+    private fun fetchCustomerListingApi(){
+        val customerServiceApi = RetrofitClient.getRetrofitInstance().create(CustomerListService::class.java)
 
-        call.enqueue(object : Callback<List<UserModel>> {
-            override fun onResponse(call: Call<List<UserModel>>,
-                                    response: Response<List<UserModel>>) {
-                val body = response.body()
-                if (body != null && body.isNotEmpty()){
-                    customerList.value = body
-                }
-            }
-
-            override fun onFailure(call: Call<List<UserModel>>, t: Throwable) {
-             Toast.makeText(getApplication(),
-                        application.getString(R.string.api_called_failed),
-                        Toast.LENGTH_SHORT).show()
-            }
-
-        })
-
+        val compositeDisposable = CompositeDisposable()
+        compositeDisposable.add(customerServiceApi.getCustomerListing()
+                .subscribeOn(Schedulers.io())/*
+                .map { customers -> customers }*/
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ customers ->
+                    customerList?.value = customers
+                }, {
+                    throwable ->
+                    Toast.makeText(getApplication()," error occurred "+throwable.localizedMessage
+                             ,Toast.LENGTH_SHORT).show()
+                        }))
     }
 
+    /*
+    *  Update Customer Selection
+    * */
     fun updateCustomerSelection(idOfCustomer: Long, checked: Boolean) {
-        val items = customerList.value
+        val items = customerList?.value
 
         if (items!= null){
             for (item in items){
@@ -67,8 +69,14 @@ class MainAcitivityViewModel(application: Application): AndroidViewModel(applica
         }
     }
 
+
+    /*
+    *
+    * get list of selected customers
+    *
+    * */
     fun getSelectedCustomers(): ArrayList<UserModel> {
-        val allItems = customerList.value
+        val allItems = customerList?.value
         val selectedItems = ArrayList<UserModel>();
 
         if (allItems!= null){
@@ -82,8 +90,13 @@ class MainAcitivityViewModel(application: Application): AndroidViewModel(applica
         return selectedItems;
     }
 
+    /*
+    *
+    *  Get Customer by Id
+    *
+    * */
     fun getCustomerById(customerId: Long?) : UserModel? {
-        val allItems = customerList.value
+        val allItems = customerList?.value
 
         if (allItems!= null){
             for (item in allItems){
@@ -95,4 +108,6 @@ class MainAcitivityViewModel(application: Application): AndroidViewModel(applica
         return null;
 
     }
+
+
 }

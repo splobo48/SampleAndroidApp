@@ -15,19 +15,15 @@ class CustomApplicaton: Application(){
 
     lateinit var component : AppComponent
 
-            override fun onCreate() {
+    override fun onCreate() {
         if (BuildConfig.DEBUG) {
             setStrictMode()
         }
-        super.onCreate()
-
-
         super.onCreate()
         component = DaggerAppComponent.builder()
                 .appModule(AppModule(this))
                 .networkModule(NetworkModule())
                 .build()
-
     }
 
     private fun setStrictMode() {
